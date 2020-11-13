@@ -1,14 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+//User page
+router.get('/user', (req, res) => {
+  return res.send('GET HTTP method on user resource');
+});
+ 
+router.post('/user', (req, res) => {
+  return res.send('POST HTTP method on user resource');
+});
+ 
+router.put('/user', (req, res) => {
+  return res.send('PUT HTTP method on user resource');
+});
+ 
+router.delete('/user', (req, res) => {
+  return res.send('DELETE HTTP method on user resource');
 });
 
-/* GET user profile. */
-router.get('/profile', function(req, res, next) {
-    res.send(req.user);
+//Users list ?maybe?
+router.get('/users', (req, res) => {
+  return res.send('GET HTTP method on user resource');
 });
 
 module.exports = router;

@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const logger = require('morgan');
+const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -11,7 +12,6 @@ const LocalStrategy = require('passport-local').Strategy;
 const index = require('./routes/index');
 const auth = require('./routes/auth');
 const user = require('./routes/user');
-const mongoose = require('mongoose');
 const User = require('./models/users');
 
 var app = express();
@@ -42,14 +42,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   credentials: true,
 }));
-app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(express.urlencoded({ extended: false }));
-app.use(function(req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
-});
 
 
 // catch 404 and forward to error handler

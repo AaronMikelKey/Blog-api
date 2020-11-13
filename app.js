@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './main.env' });
+require('dotenv').config({ path: './.env' });
 require('./passport');
 const express = require('express');
 const path = require('path');
@@ -18,7 +18,7 @@ var app = express();
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
-var mongoDB = process.env.Mongo_DB;
+const mongoDB = process.env.Mongo_DB;
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true,  });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -43,6 +43,14 @@ app.use(cors({
   credentials: true,
 }));
 
+
+
+//Users list ?maybe?
+app.get('/users', (req, res) => {
+  User.find().lean().exec(function (err, users) {
+    return res.end(JSON.stringify(users));
+  })
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

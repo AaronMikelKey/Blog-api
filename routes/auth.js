@@ -23,6 +23,7 @@ router.post('/login', function (req, res, next) {
             }
 
             const token = jwt.sign(user, process.env.JWT_Token);
+            // Add res.cookie
             return res.json({user, token});
         });
     })

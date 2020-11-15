@@ -29,10 +29,10 @@ app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/api', index);
+app.use('/', index);
 app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
 app.use('/auth', auth);
 app.use(express.json());
@@ -43,6 +43,16 @@ app.use(cors({
   credentials: true,
 }));
 
+//Pro Express.js book guide
+
+//This tells the app to do something when 'collectionName' is used in the req
+app.param('collectionName', (req, res, next, collectionName) => {
+  req.collection = db.collection('collectionName');
+  return next();
+});
+
+
+//End Book Guide
 
 
 //Users list ?maybe?

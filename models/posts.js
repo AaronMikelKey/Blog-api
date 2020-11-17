@@ -7,3 +7,5 @@ const PostSchema = new Schema({
   tags: [{ type: String }]
 },
 {timestamps: true})
+
+module.exports = mongoose.model('Post', PostSchema);

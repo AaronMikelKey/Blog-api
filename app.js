@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const index = require('./routes/index');
+const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
 const user = require('./routes/user');
 const User = require('./models/users');
@@ -33,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
+app.use('/api', apiRouter);
 app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
 app.use('/auth', auth);
 app.use(express.json());

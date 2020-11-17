@@ -33,10 +33,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', index);
-app.use('/api', apiRouter);
-app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
-app.use('/auth', auth);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -44,6 +40,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   credentials: true,
 }));
+
+
+app.use('/', index);
+app.use('/api', apiRouter);
+app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/auth', auth);
 
 //Pro Express.js book guide
 

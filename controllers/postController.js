@@ -12,3 +12,13 @@ exports.blogPost = async (req, res, next) => {
     return res.end(JSON.stringify(post));
   })
 }
+
+exports.deletePost = async (req, res, next) => {
+  try {
+    await Post.deleteOne({ _id: req.params.id });
+    return res.json({ msg: 'Post Deleted' })
+  }
+  catch (error) {
+    return res.json({ error: error });
+  }
+};

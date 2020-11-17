@@ -1,8 +1,14 @@
 const Post = require('../models/posts');
 const async = require('async');
 
-exports.index = async function(req, res, next) {
-  Post.find().lean().exec(function(err, posts) {
+exports.index = async (req, res, next) => {
+  Post.find().lean().exec((err, posts) => {
     return res.end(JSON.stringify(posts));
   });
 };
+
+exports.blogPost = async (req, res, next) => {
+  Post.findById(req.params.id).lean().exec((err, post) => {
+    return res.end(JSON.stringify(post));
+  })
+}

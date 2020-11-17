@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  email: { type: String, unique: true }
+  email: { type: String, unique: true },
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 },
   { timestamps: true }
 );

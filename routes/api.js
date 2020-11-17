@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const postController = require('../controllers/postController');
+const commentController = require('../controllers/commentController');
 
 //GET API main page
 router.get('/', postController.index);
@@ -15,10 +16,10 @@ router.delete('/:id/delete', postController.deletePost);
 //GET single blog post
 router.get('/:id', postController.blogPost);
 
-/* /PUT request to update single blog post
-router.put('/:id', res.send('not implemented yet'));
+//PUT request to update single blog post
+//router.put('/:id', res.send('not implemented yet'));
 
 //POST request for post comment
-router.post('/:id/new-comment', res.send('not implemented yet'));
-*/
+router.post('/:id/new-comment', postController.commentPost);
+
 module.exports = router;

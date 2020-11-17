@@ -1,6 +1,7 @@
 const Post = require('../models/posts');
 const Comment = require('../models/comments');
 const async = require('async');
+const e = require('express');
 
 exports.index = async (req, res, next) => {
   Post.find().lean().exec((err, posts) => {
@@ -9,10 +10,28 @@ exports.index = async (req, res, next) => {
 };
 
 exports.blogPost = async (req, res, next) => {
-  Post.findById(req.params.id).lean().exec((err, post) => {
-    return res.end(JSON.stringify(post));
-  })
-}
+  async.parallel({
+    post: (callback) => {
+      Post.findById(req.params.id)
+        .lean()
+        .exec(callback);
+    },
+    comment: (callback) => {
+      Comment.find({ post: req.params.id })
+        .lean()
+        .populate('user', 'username')
+        .exec(callback);
+    },
+  }, (err, results) => {
+    if (err) { return next(err); }
+    if (results.post === null) {
+      let err = new Error('Post not found');
+      err.status = 404;
+      return next(err);
+    }
+    return res.end(JSON.stringify(results));
+  });
+};
 
 exports.deletePost = async (req, res, next) => {
   try {

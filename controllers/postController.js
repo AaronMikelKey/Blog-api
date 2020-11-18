@@ -11,12 +11,12 @@ exports.index = async (req, res, next) => {
 exports.blogPost = async (req, res, next) => {
   async.parallel({
     post: (callback) => {
-      Post.findById(req.params.id)
+      Post.findById(req.params.postId)
         .lean()
         .exec(callback);
     },
     comment: (callback) => {
-      Comment.find({ post: req.params.id })
+      Comment.find({ post: req.params.postId })
         .lean()
         .populate('user', 'username')
         .exec(callback);
@@ -34,7 +34,7 @@ exports.blogPost = async (req, res, next) => {
 
 exports.deletePost = async (req, res, next) => {
   try {
-    await Post.deleteOne({ _id: req.params.id });
+    await Post.deleteOne({ _id: req.params.postId });
     return res.json({ msg: 'Post Deleted' })
   }
   catch (error) {
@@ -46,7 +46,7 @@ exports.updatePost = async (req,res) => {
   try {
     console.log(req.user);
     if (!req.user.me) { return res.json({ msg: 'Permission Denied' }); }
-    await Post.findById(req.params.id, (err, post) => {
+    await Post.findById(req.params.postId, (err, post) => {
       if (err) { return res.json({ error: err }); }
       post.title = req.body.title;
       post.content = req.body.content;
@@ -64,7 +64,7 @@ exports.updatePost = async (req,res) => {
 exports.commentPost = async (req, res) => {
   try {
     let newComment = new Comment({
-      post: req.param.id,
+      post: req.param.postId,
       text: req.body.text,
       user: req.user._id
     }).save();

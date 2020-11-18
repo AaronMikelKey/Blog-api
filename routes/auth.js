@@ -22,10 +22,12 @@ router.post('/login', function (req, res, next) {
             if (err) {
                 res.send(err);
             }
-            const body = {
+            let body = {
               _id: user._id,
               username: user.username
             }
+
+            if (body._id === process.env.ADMIN_ID) { body.me = true }
 
             const token = jwt.sign({user: body}, process.env.JWT_Token);
             res.cookie('auth', token, 

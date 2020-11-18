@@ -1,7 +1,6 @@
 const Post = require('../models/posts');
 const Comment = require('../models/comments');
 const async = require('async');
-const e = require('express');
 
 exports.index = async (req, res, next) => {
   Post.find().lean().exec((err, posts) => {
@@ -42,6 +41,25 @@ exports.deletePost = async (req, res, next) => {
     return res.json({ error: error });
   }
 };
+// Error here since /api/:id doesn't require auth.  Will have to work on tomorrow.
+exports.updatePost = async (req,res) => {
+  try {
+    console.log(req.user);
+    if (!req.user.me) { return res.json({ msg: 'Permission Denied' }); }
+    await Post.findById(req.params.id, (err, post) => {
+      if (err) { return res.json({ error: err }); }
+      post.title = req.body.title;
+      post.content = req.body.content;
+      post.save( (err, post) => {
+        if (err) { return res.json({ error: err}); }
+        return res.json({ post, msg: 'Post Updated' });
+      });
+    });
+  }
+  catch (error) {
+    return res.status(404).json({ error: error })
+  }
+}
 
 exports.commentPost = async (req, res) => {
   try {

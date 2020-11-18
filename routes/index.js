@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* Redirect / to /api */
-router.get('/', (req, res) => {
-  res.redirect('/api')
-})
+const postController = require('../controllers/postController');
+
+//GET API main page
+router.get('/api', postController.index);
 
 module.exports = router;

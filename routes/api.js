@@ -4,9 +4,6 @@ const router = express.Router();
 const postController = require('../controllers/postController');
 const commentController = require('../controllers/commentController');
 
-//GET API main page
-router.get('/', postController.index);
-
 //GET request for creating blog post.  Has to come before any other reqs that use ID
 //router.get('/new-post', postController.newPost);
 

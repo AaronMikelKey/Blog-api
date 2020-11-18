@@ -12,7 +12,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const index = require('./routes/index');
 const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
-const user = require('./routes/user');
+const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
 const User = require('./models/users');
 
@@ -42,14 +42,14 @@ app.use(cors({
   credentials: true,
 }));
 
-
+//No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);
-app.use('/api', apiRouter);
-app.use('/user', passport.authenticate('jwt', {session: false}), (req, res) => {
-  res.json(req.user);
-});
-app.use('/comment', commentRouter);
 app.use('/auth', auth);
+//Auth needed for these since they handle POSTs, PUTs, and DELETEs
+app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);
+app.use('/user', passport.authenticate('jwt', {session: false}), userRouter);
+app.use('/comment', passport.authenticate('jwt', {session: false}), commentRouter);
+
 
 //Pro Express.js book guide
 

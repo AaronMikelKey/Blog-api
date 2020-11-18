@@ -17,7 +17,7 @@ router.delete('/:id/delete', postController.deletePost);
 router.get('/:id', postController.blogPost);
 
 //PUT request to update single blog post
-//router.put('/:id', res.send('not implemented yet'));
+router.put('/:id', (req,res)=>{res.send('not implemented yet')});
 
 //POST request for post comment
 router.post('/:id/new-comment', postController.commentPost);

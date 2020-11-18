@@ -13,6 +13,7 @@ const index = require('./routes/index');
 const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
 const user = require('./routes/user');
+const commentRouter = require('./routes/comment');
 const User = require('./models/users');
 
 var app = express();
@@ -47,6 +48,7 @@ app.use('/api', apiRouter);
 app.use('/user', passport.authenticate('jwt', {session: false}), (req, res) => {
   res.json(req.user);
 });
+app.use('/comment', commentRouter);
 app.use('/auth', auth);
 
 //Pro Express.js book guide

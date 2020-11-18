@@ -1,3 +1,4 @@
+require('dotenv').config({ path: './.env' });
 const passport = require('passport');
 const passportJWT = require("passport-jwt");
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -36,17 +37,16 @@ passport.use(new LocalStrategy({
 
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'your_jwt_secret'
+  secretOrKey: process.env.JWT_Token
 },
-  function (jwtPayload, cb) {
+  async function (jwtPayload, cb) {
 
     //find the user in db if needed
-    return User.findOneById(jwtPayload.id)
-      .then(user => {
-        return cb(null, user);
-      })
-      .catch(err => {
-        return cb(err);
-      });
+    try {
+      const user = await User.findById(jwtPayload.user._id);
+      return cb(null, user);
+    } catch (err) {
+      return cb(err);
+    }
   }
 ));

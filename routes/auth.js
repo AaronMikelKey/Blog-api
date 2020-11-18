@@ -34,7 +34,7 @@ router.post('/login', function (req, res, next) {
                 secure: true,
                 httpOnly: true,
                 sameSite: "none"
-                })
+                });
             return res.json({user, token});
         });
     })

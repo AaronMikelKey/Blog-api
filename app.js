@@ -44,7 +44,9 @@ app.use(cors({
 
 app.use('/', index);
 app.use('/api', apiRouter);
-app.use('/api/user', passport.authenticate('jwt', {session: false}), user);
+app.use('/user', passport.authenticate('jwt', {session: false}), (req, res) => {
+  res.json(req.user);
+});
 app.use('/auth', auth);
 
 //Pro Express.js book guide

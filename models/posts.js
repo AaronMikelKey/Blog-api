@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const PostSchema = new Schema({
   title: { type: String, required: true, },
   blogContent: { type: String, required: true, },
-  tags: [{ type: String }],
-  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment'}]
+  tags: [{ type: String }]
 },
 {timestamps: true})
 

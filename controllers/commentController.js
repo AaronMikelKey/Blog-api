@@ -14,7 +14,7 @@ exports.commentPost = [
       validationResult(req).throw()
 
       let newComment = new Comment({
-        post: req.params.commentId,
+        post: req.params.postId,
         text: req.body.text,
         user: req.user._id
       }).save()

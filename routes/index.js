@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 router.get('/api', postController.index);
 
 //GET single blog post
-router.get('/api/:id', postController.blogPost);
+router.get('/api/:postId', postController.blogPost);
 
 module.exports = router;

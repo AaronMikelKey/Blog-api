@@ -14,4 +14,7 @@ router.post('/:commentId', commentController.commentPost)
 //PUT request for comment
 router.put('/:commentId', commentController.commentUpdate)
 
+//DELETE request for comment
+router.delete('/:commentId', commentController.commentDelete)
+
 module.exports = router;

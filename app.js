@@ -21,7 +21,7 @@ var app = express();
 //Set up mongoose connection
 var mongoose = require('mongoose');
 const mongoDB = process.env.Mongo_DB;
-mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true,  });
+mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true, useFindAndModify: false });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
@@ -48,7 +48,7 @@ app.use('/auth', auth);
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
 app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);
 app.use('/user', passport.authenticate('jwt', {session: false}), userRouter);
-app.use('/api/:postId', passport.authenticate('jwt', {session: false}), commentRouter);
+app.use('/api/:postId/comment', passport.authenticate('jwt', {session: false}), commentRouter);
 
 
 //Pro Express.js book guide

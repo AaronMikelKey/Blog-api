@@ -38,6 +38,7 @@ exports.blogPost = async (req, res, next) => {
 //Delete single post
 exports.deletePost = async (req, res, next) => {
   try {
+    if (req.user.username.toString() !== 'AaronMikelKey' ) { return res.status(401).json({ msg: 'Permission Denied' }); }
     await Post.deleteOne({ _id: req.params.postId });
     return res.json({ msg: 'Post Deleted' })
   }
@@ -46,25 +47,43 @@ exports.deletePost = async (req, res, next) => {
   }
 };
 
-// Error here since /api/:id doesn't require auth.  Will have to work on tomorrow.
+// Error here.  THIS SHIT DON'T WORK
 //Update single post
-exports.updatePost = async (req,res) => {
+exports.updatePost = [
+
+  check('title')
+  .trim()
+  .optional()
+  .escape(),
+  check('blogContent')
+  .trim()
+  .optional()
+  .escape(),
+  check('tags')
+  .trim()
+  .optional()
+  .escape(),
+
+async (req,res,) => {
   try {
-    if (req.user.username.toString() !== 'AaronMikelKey' ) { return res.json({ msg: 'Permission Denied' }); }
+    validationResult(req).throw()
+
+    if (req.user.username.toString() !== 'AaronMikelKey' ) { console.log('username err'); return res.response(401).json({ msg: 'Permission Denied' }); }
     await Post.findById(req.params.postId, (err, post) => {
       if (err) { return res.json({ error: err }); }
-      post.title = req.body.title;
-      post.blogContent = req.body.blogContent;
-      post.save( (err, post) => {
-        if (err) { return res.json({ error: err}); }
-        return res.json({ post, msg: 'Post Updated' });
-      });
+
+      post.title = (typeof req.body.title==='undefined') ? '' : req.body.title;
+      post.blogContent = (typeof req.body.blogContent==='undefined') ? '' : req.body.blogContent;
+      post.tags = (typeof req.body.tags==='undefined') ? [] : req.body.tags;
+      post.save()
     });
   }
   catch (error) {
+    console.log('catch')
     return res.status(404).json({ error: error })
   }
 }
+]
 
 //Create single post
 exports.createPost = [
@@ -86,7 +105,7 @@ exports.createPost = [
 
 async (req, res) => {
   try {
-    console.log(req.user.username)
+    validationResult(req).throw()
     if (req.user.username.toString() !== 'AaronMikelKey') { return res.status(401).json({ msg: 'Permission denied.'}) }
     let newPost = new Post({
       title: req.body.title,

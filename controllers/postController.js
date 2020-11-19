@@ -71,11 +71,18 @@ async (req,res,) => {
     if (req.user.username.toString() !== 'AaronMikelKey' ) { console.log('username err'); return res.response(401).json({ msg: 'Permission Denied' }); }
     await Post.findById(req.params.postId, (err, post) => {
       if (err) { return res.json({ error: err }); }
-
-      post.title = (typeof req.body.title==='undefined') ? '' : req.body.title;
-      post.blogContent = (typeof req.body.blogContent==='undefined') ? '' : req.body.blogContent;
-      post.tags = (typeof req.body.tags==='undefined') ? [] : req.body.tags;
-      post.save()
+        let newTitle, newContent, newTags
+        if (req.body.title !== '') { newTitle = req.body.title; }
+        if (req.body.blogContent !== '') { newContent = req.body.blogContent }
+        if (req.body.tags !== '') { newTags = req.body.tags }
+      post.update({ 
+        title: (typeof newTitle === 'undefined' ? post.title : req.body.title), 
+        blogContent: (typeof newContent === 'undefined' ? post.blogContent : req.body.blogContent), 
+        tags: (typeof newTags === 'undefined' ? post.tags : req.body.tags) 
+      }, (err, result) => {
+        if (err) { return res.json({ error: err }) }
+        return res.json({ msg: 'Post updated' })
+      })
     });
   }
   catch (error) {

@@ -4,17 +4,14 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const logger = require('morgan');
-const bcrypt = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const index = require('./routes/index');
 const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
-const User = require('./models/users');
 
 var app = express();
 
@@ -62,13 +59,6 @@ app.param('collectionName', (req, res, next, collectionName) => {
 
 //End Book Guide
 
-
-//Users list ?maybe?
-app.get('/users', (req, res) => {
-  User.find().lean().exec(function (err, users) {
-    return res.end(JSON.stringify(users));
-  })
-});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

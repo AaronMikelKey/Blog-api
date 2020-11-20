@@ -17,9 +17,13 @@ exports.commentPost = [
         post: req.params.postId,
         text: req.body.text,
         user: req.user._id
-      }).save()
+      })
+      
+      newComment.save((err, result) => {
+        if (err) { return res.status(404).json({msg: err}) }
+        return res.json({result, msg: 'Comment posted'})
+      })
 
-      return res.json({ msg: 'Comment Posted', post: newComment.post })
     } catch (error) {
       return res.status(404).json({ error: error })
     }
@@ -42,10 +46,9 @@ exports.commentUpdate = [
         //Must compare using .toString()
         if (comment.user.toString() !== req.user._id.toString()) { return res.status(401).json({ msg: 'You can only edit your own comments.' }) }
         
-        comment.text = req.body.text;
-        comment.save((err, comment) => {
+        comment.update({ text: req.body.text }, (err, comment) => {
           if (err) { return res.json({ error: err }) }
-          return res.json(comment)
+          return res.json(comment, {msg: 'Comment updated'})
         })
       })
     } catch (error) {
@@ -60,6 +63,7 @@ exports.commentDelete = async (req, res, next) => {
       if (error) { return next(error) }
       if (comment.user !== req.user._id) { return res.status(401).json({ msg: 'You can only delete your own comments.' }) }
       comment.remove()
+      return res.json({msg: 'Comment deleted'})
     })
   }
   catch (error) {

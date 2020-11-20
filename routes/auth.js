@@ -1,7 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-
-const bcrypt = require('bcryptjs');
+const app = express();
 const jwt      = require('jsonwebtoken');
 const passport = require('passport');
 
@@ -10,7 +9,6 @@ const passport = require('passport');
 router.post('/login', function (req, res, next) {
 
     passport.authenticate('local', {session: false}, (err, user, info) => {
-        console.log(err);
         if (err || !user) {
             return res.status(400).json({
                 message: info ? info.message : 'Login failed',
@@ -26,17 +24,15 @@ router.post('/login', function (req, res, next) {
               _id: user._id,
               username: user.username
             }
-
-            if (body._id === process.env.ADMIN_ID) { body.me = true }
-
             const token = jwt.sign({user: body}, process.env.JWT_Token);
-            res.cookie('auth', token, 
+            res.cookie('access_token', 'Bearer ' + token, 
               { 
                 path: '/',
-                secure: true,
                 httpOnly: true,
-                sameSite: "none"
-                });
+                secure: false,
+                sameSite: router.get("env") === "development" ? true : "none"
+                })
+            console.log(res.cookie);
             return res.json({user, token});
         });
     })

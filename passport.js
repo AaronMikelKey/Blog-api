@@ -8,16 +8,16 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/users');
 
 passport.use(new LocalStrategy({
-  usernameField: 'email',
+  usernameField: 'username',
   passwordField: 'password'
 },
 
-  (email, password, cb) => {
+  (username, password, cb) => {
     //Assume there is a DB module pproviding a global UserModel
-    return User.findOne({ email })
+    return User.findOne({ username })
       .then(user => {
         if (!user) {
-          return cb(null, false, { message: 'Incorrect email.' });
+          return cb(null, false, { message: 'Incorrect username.' });
         }
         bcrypt.compare(password, user.password, (err, res) => {
           if (res) {

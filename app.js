@@ -12,6 +12,7 @@ const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
+const PORT = normalizePort(process.env.PORT || '3000');
 
 var app = express();
 
@@ -77,6 +78,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
 module.exports = app;

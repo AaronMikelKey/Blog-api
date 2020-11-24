@@ -12,7 +12,7 @@ const apiRouter = require('./routes/api')
 const auth = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
-const PORT = normalizePort(process.env.PORT || '3000');
+const PORT = process.env.PORT || '3000';
 
 var app = express();
 

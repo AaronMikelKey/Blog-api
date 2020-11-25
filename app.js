@@ -41,22 +41,14 @@ app.use(cors({
 }));
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
-//app.use('/', index);
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, index), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
-/*
+app.use('/', index);
 app.use('/auth', auth);
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
 app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);
 app.use('/api/user', passport.authenticate('jwt', {session: false}), userRouter);
 app.use('/api/:postId/comment', passport.authenticate('jwt', {session: false}), commentRouter);
 
-*/
+
 //Pro Express.js book guide
 
 //This tells the app to do something when 'collectionName' is used in the req

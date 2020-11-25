@@ -41,7 +41,14 @@ app.use(cors({
 }));
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
-app.use('/', index);
+//app.use('/', index);
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, index), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 app.use('/auth', auth);
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
 app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);

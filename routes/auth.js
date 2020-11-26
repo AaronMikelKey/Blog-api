@@ -32,12 +32,9 @@ router.post('/login', function (req, res, next) {
                 secure: false,
                 sameSite: router.get("env") === "development" ? true : "none"
                 })
-            console.log(res.cookie);
-            return res.json({user, token});
+                res.json({user, token});
         });
     })
-    (req, res);
-
 });
 
 module.exports = router;

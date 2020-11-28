@@ -7,13 +7,9 @@ const JWTStrategy = passportJWT.Strategy;
 const bcrypt = require('bcryptjs');
 const User = require('./models/users');
 
-passport.use(new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password'
-},
+passport.use(new LocalStrategy(
 
   (username, password, cb) => {
-    //Assume there is a DB module pproviding a global UserModel
     return User.findOne({ username })
       .then(user => {
         if (!user) {

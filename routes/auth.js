@@ -31,7 +31,13 @@ router.post('/login', async (req, res, next) => {
           secure: false,
           sameSite: router.get("env") === "development" ? true : "none"
         })
-      return res.json({ user, token });
+      return res.json({ user, token }).cookie('access_token', 'Bearer ' + token,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: false,
+        sameSite: router.get("env") === "development" ? true : "none"
+      });
     });
   })
     (req, res, next)

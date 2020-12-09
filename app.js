@@ -40,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors({
   origin: 'http://localhost:8080',
   credentials: true,
+  methods: 'POST,PUT,GET,DELETE,OPTIONS'
 }));
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.

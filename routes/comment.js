@@ -9,7 +9,7 @@ router.get('/:commentId', (req, res) => {
 })
 
 //POST request for new comment
-router.post('/:commentId', commentController.commentPost)
+router.post('/', commentController.commentPost)
 
 //PUT request for comment
 router.put('/:commentId', commentController.commentUpdate)

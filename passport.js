@@ -42,7 +42,7 @@ passport.use(new JWTStrategy({
     //find the user in db if needed
     try {
       const user = await User.findById(jwtPayload.user._id);
-      return cb(null, user);
+      return cb(null, jwtPayload);
     } catch (err) {
       return cb(err);
     }
@@ -58,7 +58,7 @@ async function (jwtPayload, cb) {
   //find the user in db if needed
   try {
     const user = await User.findById(jwtPayload.user._id);
-    return cb(null, user);
+    return cb(null, jwtPayload);
   } catch (err) {
     return cb(err);
   }

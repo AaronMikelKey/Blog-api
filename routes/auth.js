@@ -23,7 +23,7 @@ router.post('/login', async (req, res, next) => {
         _id: user._id,
         username: user.username
       }
-      const token = jwt.sign({ user: body }, process.env.JWT_Token);
+      const token = jwt.sign(JSON.stringify(body), process.env.JWT_Token);
       res.cookie('access_token', 'Bearer ' + token,
         {
           path: '/',
@@ -31,7 +31,7 @@ router.post('/login', async (req, res, next) => {
           secure: false,
           sameSite: router.get("env") === "development" ? true : "none"
         })
-      return res.json({ user, token });
+      return res.json({ body, token });
     });
   })
     (req, res, next)

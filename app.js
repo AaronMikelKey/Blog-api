@@ -44,8 +44,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 const corsOptions = {
   origin: ['https://aaron-key-blog-front-end.herokuapp.com', 'facebook.com'],
   credentials: true,
+  secure: true,
   methods: 'POST,PUT,GET,DELETE,OPTIONS',
-  allowedHeaders: 'Content-Type,Authorization'
+  allowedHeaders: 'Content-Type,Authorization,Security-Policy'
 }
 app.use(cors(corsOptions));
 

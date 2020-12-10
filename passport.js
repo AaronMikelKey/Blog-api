@@ -31,6 +31,8 @@ passport.use(new LocalStrategy(
   }
 ));
 
+//Passport Strats
+//AuthHeader if present
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_Token
@@ -46,16 +48,10 @@ passport.use(new JWTStrategy({
     }
   }
 ));
-
+//Cookie auth
 passport.use(new JWTStrategy({
-  jwtFromRequest: function(req) {
-    var token = null;
-    if (req && req.cookies)
-    {
-        token = req.cookies['jwt'];
-    }
-    return token;
-}, secretOrKey: process.env.JWT_Token
+  jwtFromRequest: req=>req.cookies.access_token,
+  secretOrKey: process.env.JWT_Token
 },
 async function (jwtPayload, cb) {
 

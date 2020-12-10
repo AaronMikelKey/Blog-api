@@ -30,21 +30,23 @@ app.set('view engine', 'pug');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_Token));
 app.use(passport.initialize())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Options for CORS usage.  Change origin once project is finished
 const corsOptions = {
   origin: 'http://localhost:8080',
   credentials: true,
   methods: 'POST,PUT,GET,DELETE,OPTIONS',
   allowedHeaders: 'Content-Type,Authorization'
 }
-
 app.use(cors(corsOptions));
+
+
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);

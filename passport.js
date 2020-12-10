@@ -35,8 +35,8 @@ passport.use(new LocalStrategy(
 //Passport Strats
 //FB Strat
 passport.use(new FacebookStrategy({
-  clientID: process.env.FB_APP_ID,
-  clientSecret: process.env.FB_SECRET,
+  clientID: process.env.FB_APP_ID||process.env.FB_APP_ID2,
+  clientSecret: process.env.FB_SECRET||process.env.FB_SECRET2,
   callbackURL: "/return",
   enableProof: true,
   profileFields: ['id', 'displayName', 'photos', 'email']

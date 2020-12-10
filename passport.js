@@ -37,7 +37,7 @@ passport.use(new LocalStrategy(
 passport.use(new FacebookStrategy({
   clientID: process.env.FB_APP_ID||process.env.FB_APP_ID2,
   clientSecret: process.env.FB_SECRET||process.env.FB_SECRET2,
-  callbackURL: "https://aaron-key-blog-api.herokuapp.com/",
+  callbackURL: "https://aaron-key-blog-front-end.herokuapp.com",
   enableProof: true,
   profileFields: ['id', 'displayName', 'photos', 'email']
 },

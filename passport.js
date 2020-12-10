@@ -46,3 +46,25 @@ passport.use(new JWTStrategy({
     }
   }
 ));
+
+passport.use(new JWTStrategy({
+  jwtFromRequest: function(req) {
+    var token = null;
+    if (req && req.cookies)
+    {
+        token = req.cookies['jwt'];
+    }
+    return token;
+}, secretOrKey: process.env.JWT_Token
+},
+async function (jwtPayload, cb) {
+
+  //find the user in db if needed
+  try {
+    const user = await User.findById(jwtPayload.user._id);
+    return cb(null, user);
+  } catch (err) {
+    return cb(err);
+  }
+}
+))

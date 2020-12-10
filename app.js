@@ -13,6 +13,8 @@ const auth = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
 const PORT = process.env.PORT || '3000';
+const passportJWT = require("passport-jwt");
+const JWTStrategy = passportJWT.Strategy;
 
 var app = express();
 

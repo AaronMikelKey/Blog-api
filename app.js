@@ -47,6 +47,22 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
+//Cookie auth
+passport.use(new JWTStrategy({
+  jwtFromRequest: req=>req.cookies.access_token,
+  secretOrKey: process.env.JWT_Token
+},
+async function (jwtPayload, cb) {
+
+  //find the user in db if needed
+  try {
+    const user = await User.findById(jwtPayload.user._id);
+    return cb(null, jwtPayload);
+  } catch (err) {
+    return cb(err);
+  }
+}
+))
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);

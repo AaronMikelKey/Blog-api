@@ -34,6 +34,7 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(cookieParser(process.env.JWT_Token));
 app.use(passport.initialize())
+app.use(passport.session())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -49,30 +50,21 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-//Cookie auth
-passport.use(new JWTStrategy({
-  jwtFromRequest: req=>req.cookies.access_token,
-  secretOrKey: process.env.JWT_Token
-},
-async function (jwtPayload, cb) {
 
-  //find the user in db if needed
-  try {
-    const user = await User.findById(jwtPayload.user._id);
-    return cb(null, jwtPayload);
-  } catch (err) {
-    return cb(err);
-  }
-}
-))
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);
 app.use('/auth', auth);
+app.get('/auth/facebook', passport.authenticate('facebook'))
+app.get('/return', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
-app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);
-app.use('/api/user', passport.authenticate('jwt', {session: false}), userRouter);
-app.use('/api/:postId/comment', passport.authenticate('jwt', {session: false}), commentRouter);
+app.use('/api', passport.authenticate('facebook'), apiRouter);
+app.use('/api/user', passport.authenticate('facebook'), userRouter);
+app.use('/api/:postId/comment', passport.authenticate('facebook'), commentRouter);
 
 
 //Pro Express.js book guide

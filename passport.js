@@ -6,6 +6,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const bcrypt = require('bcryptjs');
 const User = require('./models/users');
+const FacebookStrategy = require('passport-facebook').Strategy
 
 passport.use(new LocalStrategy(
 
@@ -32,6 +33,20 @@ passport.use(new LocalStrategy(
 ));
 
 //Passport Strats
+//FB Strat
+passport.use(new FacebookStrategy({
+  clientID: process.env.FB_APP_ID,
+  clientSecret: process.env.FB_SECRET,
+  callbackURL: "/return",
+  enableProof: true,
+  profileFields: ['id', 'displayName', 'photos', 'email']
+},
+function(accessToken, refreshToken, profile, cb) {
+  User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    return cb(err, user);
+  });
+}
+));
 //AuthHeader if present
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
@@ -64,3 +79,11 @@ async function (jwtPayload, cb) {
   }
 }
 ))
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});

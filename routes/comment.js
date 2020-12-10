@@ -9,7 +9,12 @@ router.get('/:commentId', (req, res) => {
 })
 
 //POST request for new comment
-router.post('/newComment', commentController.commentPost)
+router.post('/newComment',{headers: {
+  'Access-Control-Allow-Headers':'Content-Type',
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': 'http://localhost:8080',
+  'Vary':'Origin'
+}}, commentController.commentPost)
 
 //PUT request for comment
 router.put('/:commentId', commentController.commentUpdate)

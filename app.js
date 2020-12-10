@@ -50,7 +50,12 @@ app.use('/auth', auth);
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
 app.use('/api', passport.authenticate('jwt', {session: false}), apiRouter);
 app.use('/api/user', passport.authenticate('jwt', {session: false}), userRouter);
-app.use('/api/:postId/comment', passport.authenticate('jwt', {session: false}), commentRouter);
+app.use('/api/:postId/comment',{headers: {
+  'Access-Control-Allow-Headers':'Content-Type',
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': 'http://localhost:8080',
+  'Vary':'Origin'
+}}, passport.authenticate('jwt', {session: false}), commentRouter);
 
 
 //Pro Express.js book guide

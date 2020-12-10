@@ -45,11 +45,7 @@ const corsOptions = {
   allowedHeaders: 'Content-Type,Authorization'
 }
 
-app.use(cors({
-  origin: true,
-  credentials: true,
-  methods: 'POST,PUT,GET,DELETE,OPTIONS'
-}));
+app.use(cors(corsOptions));
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);

@@ -37,6 +37,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+  methods: 'POST,PUT,GET,DELETE,OPTIONS',
+  allowedHeaders: 'Content-Type,Authorization'
+}
+
 app.use(cors({
   origin: true,
   credentials: true,

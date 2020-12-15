@@ -51,33 +51,27 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-
+// ROUTES
 
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);
 app.use('/auth', auth);
+//Facebook Auth process, user logs in with FB and is sent auth token from API
 app.get('/auth/facebook', passport.authenticate('facebook'))
 app.get('/return', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
+
+  
+
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
-app.use('/api', passport.authenticate('facebook'), apiRouter);
-app.use('/api/user', passport.authenticate('facebook'), userRouter);
-app.use('/api/:postId/comment', passport.authenticate('facebook'), commentRouter);
+app.use('/api', passport.authenticate('local'), apiRouter);
+app.use('/api/user', passport.authenticate('local'), userRouter);
+app.use('/api/:postId/comment', passport.authenticate('local'), commentRouter);
 
-
-//Pro Express.js book guide
-
-//This tells the app to do something when 'collectionName' is used in the req
-app.param('collectionName', (req, res, next, collectionName) => {
-  req.collection = db.collection('collectionName');
-  return next();
-});
-
-
-//End Book Guide
+// END ROUTES
 
 
 // catch 404 and forward to error handler

@@ -39,7 +39,7 @@ passport.use(new FacebookStrategy({
   clientSecret: process.env.FB_SECRET || process.env.FB_SECRET2,
   //WHEN DONE TESTING THIS NEEDS TO BE CHANGED TO OTHER URL
   //Local auth route.  This route uses JWT Strat to log user in locally
-  callbackURL: "https://blog-front-end-test.herokuapp.com",
+  callbackURL: "https://blog-front-end-test.herokuapp.com/fb-login",
   enableProof: true,
   profileFields: ['id']
 },

@@ -73,7 +73,7 @@ const cookieExtractor = (req) => {
 //JWT Strategy for auth from cookie
 passport.use('JWToken', new JWTStrategy({
   secretOrKey: process.env.JWT_Token,
-  jwtFromRequest: cookieExtractor(req)
+  jwtFromRequest: cookieExtractor()
 }, function (jwt_payload, done) {
   User.find({ _id: jwt_payload.user._id }, function (err, user) {
     if (err) {

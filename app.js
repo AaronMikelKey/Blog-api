@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Options for CORS usage.  Change origin once project is finished
 const corsOptions = {
-  origin: ['https://aaron-key-blog-front-end.herokuapp.com','https://facebook.com', 'facebook.com', 'https://blog-front-end-test.herokuapp.com'],
+  origin: ['https://blog-front-end-test.herokuapp.com','https://facebook.com', 'facebook.com', 'https://aaron-key-blog-front-end.herokuapp.com'],
   credentials: true,
   secure: true,
   methods: 'POST,PUT,GET,DELETE,OPTIONS',
@@ -54,6 +54,7 @@ app.use(cors(corsOptions));
 //No auth needed for index, just shows the list of blog posts, auth is the route for signing in.
 app.use('/', index);
 app.use('/auth', auth);
+//Authorize through FB login SDK
 app.get('/auth/facebook', passport.authenticate('facebook'))
 //FB login callback route, sends the JWT for API auth
 app.get('/fb-login', 

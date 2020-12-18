@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Options for CORS usage.  Change origin once project is finished
 const corsOptions = {
-  origin: ['https://blog-front-end-test.herokuapp.com','https://facebook.com', 'facebook.com', 'https://aaron-key-blog-front-end.herokuapp.com'],
+  origin: ['https://aaron-key-blog-front-end.herokuapp.com','https://facebook.com', 'facebook.com', 'https://blog-front-end-test.herokuapp.com'],
   credentials: true,
   secure: true,
   methods: 'POST,PUT,GET,DELETE,OPTIONS',

@@ -13,8 +13,6 @@ const auth = require('./routes/auth');
 const userRouter = require('./routes/user');
 const commentRouter = require('./routes/comment');
 const PORT = process.env.PORT || '3000';
-const passportJWT = require("passport-jwt");
-const JWTStrategy = passportJWT.Strategy;
 
 var app = express();
 
@@ -57,27 +55,27 @@ app.use(cors(corsOptions));
 app.use('/', index);
 app.use('/auth', auth);
 app.get('/auth/facebook', passport.authenticate('facebook'))
-app.get('/return', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+//FB login callback route, sends the JWT for API auth
+app.get('/fb-login', 
+  passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    if (req.user.jwtoken) {
+      const token = req.user.jwtoken
+      //set cookie with 1 hour lifespan.  httpOnly means only accessible byt the webserver,
+      //    secure means it requires https
+      res.cookie('jwtoken', token, {maxAge: 3600000, httpOnly: true, secure: true})
+      //client side should handle redirect just in case they log in from a post
+      res.json({success: true})
+    } else {
+      //client side will redirect to login just in case
+      res.json({success: false})
+    }
   });
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
-app.use('/api', passport.authenticate('facebook'), apiRouter);
-app.use('/api/user', passport.authenticate('facebook'), userRouter);
-app.use('/api/:postId/comment', passport.authenticate('facebook'), commentRouter);
+app.use('/api', passport.authenticate('JWToken'), apiRouter);
+app.use('/api/user', passport.authenticate('JWToken'), userRouter);
+app.use('/api/:postId/comment', passport.authenticate('JWToken'), commentRouter);
 
-
-//Pro Express.js book guide
-
-//This tells the app to do something when 'collectionName' is used in the req
-app.param('collectionName', (req, res, next, collectionName) => {
-  req.collection = db.collection('collectionName');
-  return next();
-});
-
-
-//End Book Guide
 
 
 // catch 404 and forward to error handler

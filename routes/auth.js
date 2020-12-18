@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
 
-/* POST login. */
+/* POST local login. */
 router.post('/login', async (req, res, next) => {
-
+//This might need to be changed to FB auth
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err || !user) {
       return res.status(400).json({
@@ -28,7 +27,7 @@ router.post('/login', async (req, res, next) => {
         {
           path: '/',
           httpOnly: true,
-          secure: false,
+          secure: true,
           sameSite: router.get("env") === "development" ? true : "none"
         })
       return res.json({ body, token });

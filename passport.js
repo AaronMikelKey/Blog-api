@@ -59,24 +59,11 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-
-
-//cookie extractor for parsing JWT
-const cookieExtractor = (req) => {
-  let token = null
-  if (req && req.cookies) {
-    token = req.cookies['jwtoken']
-  }
-  return token
-}
-
-//JWT options
-const opts = {}
-opts.jwtFromRequest = cookieExtractor()
-opts.secretOrKey = process.env.JWT_Token
-
 //JWT Strategy for auth from cookie
-passport.use('JWToken', new JWTStrategy(opts, function (jwt_payload, done) {
+passport.use('JWToken', new JWTStrategy({
+  secretOrKey: process.env.JWT_Token,
+  jwtFromRequest: req => req.cookies.jwtoken
+}, function (jwt_payload, done) {
   User.find({ _id: jwt_payload.user._id }, function (err, user) {
     if (err) {
       return done(err)

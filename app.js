@@ -72,6 +72,10 @@ app.get('/fb-login',
       res.json({success: false})
     }
   });
+app.get('/logout', function(req, res) {
+  res.clearCookie('jwtoken', token, {maxAge: 3600000, httpOnly: true, secure: true})
+  res.json({success: true})
+})
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs
 app.use('/api', passport.authenticate('JWToken'), apiRouter);
 app.use('/api/user', passport.authenticate('JWToken'), userRouter);

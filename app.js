@@ -64,7 +64,7 @@ app.get('/fb-login',
       const token = req.user.jwtoken
       //set cookie with 1 hour lifespan.  httpOnly means only accessible byt the webserver,
       //    secure means it requires https
-      res.cookie('jwtoken', token, {maxAge: 3600000, httpOnly: true, secure: true})
+      res.cookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
       //client side should handle redirect just in case they log in from a post
       res.json({success: true})
     } else {
@@ -73,7 +73,7 @@ app.get('/fb-login',
     }
   });
 app.get('/logout', function(req, res) {
-  res.clearCookie('jwtoken', token, {maxAge: 3600000, httpOnly: true, secure: true})
+  res.clearCookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
   res.json({success: true})
 })
 //Auth needed for these since they handle POSTs, PUTs, and DELETEs

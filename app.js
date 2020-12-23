@@ -57,7 +57,7 @@ app.use('/auth', auth);
 //Authorize through FB login SDK
 app.get('/auth/facebook', passport.authenticate('facebook'))
 //FB login callback route, sends the JWT for API auth
-app.get('/fb-login', 
+app.post('/fb-login', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     if (req.user.jwtoken) {

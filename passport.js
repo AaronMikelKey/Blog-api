@@ -45,11 +45,11 @@ passport.use(new FacebookStrategy({
 },
   function (accessToken, refreshToken, profile, cb) {
     //Find user if they exist
-    User.find({ facebookId: profile.id }, function (err, user) {
+    User.find({ facebook: { id : profile.id } }, function (err, user) {
       //If user does exist in local DB
       if (user) {
         //Set user facebook token for facebooks graph API calls
-        user.facebookToken = accessToken
+        user.facebook.token = accessToken
         //Set and send JSON web token to local auth route
         var token = jwt.sign(user, process.env.JWT_Token)
         user.jwtoken = token

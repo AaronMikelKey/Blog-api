@@ -55,9 +55,9 @@ app.use(cors(corsOptions));
 app.use('/', index);
 app.use('/auth', auth);
 //Authorize through FB login SDK
-app.get('/auth/facebook', passport.authenticate('facebook'))
+app.use('/auth/facebook', passport.authenticate('facebook'))
 //FB login callback route, sends the JWT for API auth
-app.post('/fb-login', 
+app.use('/fb-login', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     if (req.user.jwtoken) {
@@ -72,7 +72,7 @@ app.post('/fb-login',
       res.json({success: false})
     }
   });
-app.get('/logout', function(req, res) {
+app.use('/logout', function(req, res) {
   res.clearCookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
   res.json({success: true})
 })

@@ -6,6 +6,7 @@ const User = require('./models/users');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy
 const bcrypt = require('bcryptjs');
 
 
@@ -76,3 +77,27 @@ passport.use('JWToken', new JWTStrategy({
     }
   })
 }))
+
+//Google Strategy for login
+passport.use(new GoogleStrategy({
+  clientID: process.env.FB_APP_ID || process.env.FB_APP_ID2,
+  clientSecret: process.env.FB_SECRET || process.env.FB_SECRET2,
+  //WHEN DONE TESTING THIS NEEDS TO BE CHANGED TO OTHER URL
+  //Local auth route.  This route uses JWT Strat to log user in locally
+  callbackURL: "https://blog-front-end-test.herokuapp.com/google-login"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    //Find user if they exist
+    User.find({ google: { id : profile.id } }, function (err, user) {
+      //If user does exist in local DB
+      if (user) {
+        //Set user google token in case we need to use it later
+        user.google.token = accessToken
+        //Set and send JSON web token to local auth route
+        var token = jwt.sign(user, process.env.JWT_Token)
+        user.jwtoken = token
+      }
+      return cb(err, user);
+    });
+  }
+));

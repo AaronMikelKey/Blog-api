@@ -20,7 +20,7 @@ const UserSchema = new Schema({
     name:  String,
     email: String
   },
-  googleId: {
+  google: {
     id:    { type: String, unique: true },
     token: String,
     name:  String,

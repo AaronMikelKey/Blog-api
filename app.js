@@ -55,9 +55,9 @@ app.use(cors(corsOptions));
 app.use('/', index);
 app.use('/auth', auth);
 //Authorize through FB login SDK
-app.use('/auth/facebook', passport.authenticate('facebook'))
+app.get('/auth/facebook', passport.authenticate('facebook'))
 //FB login callback route, sends the JWT for API auth
-app.use('/fb-login', 
+app.get('/fb-login', 
   passport.authenticate('facebook', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     if (req.user.jwtoken) {
@@ -71,7 +71,22 @@ app.use('/fb-login',
       //client side will redirect to login just in case
       res.json({success: false})
     }
-  });
+  })
+app.get('/auth/google', passport.authenticate('google'))
+app.get('google-login', passport.authenticate('google', { session: false, failureRedirect: '/login' }),
+  function(req, res) {
+    if (req.user.jwtoken) {
+      const token = req.user.jwtoken
+      //set cookie with 1 hour lifespan.  httpOnly means only accessible byt the webserver,
+      //    secure means it requires https
+      res.cookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
+      //client side should handle redirect just in case they log in from a post
+      res.json({success: true})
+    } else {
+      //client side will redirect to login just in case
+      res.json({success: false})
+    }
+  })
 app.use('/logout', function(req, res) {
   res.clearCookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
   res.json({success: true})

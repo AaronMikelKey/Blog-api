@@ -80,8 +80,8 @@ passport.use('JWToken', new JWTStrategy({
 
 //Google Strategy for login
 passport.use(new GoogleStrategy({
-  clientID: process.env.FB_APP_ID || process.env.FB_APP_ID2,
-  clientSecret: process.env.FB_SECRET || process.env.FB_SECRET2,
+  clientID: process.env.GOOGLE_APP_ID,
+  clientSecret: process.env.GOOGLE_APP_SECRET,
   //WHEN DONE TESTING THIS NEEDS TO BE CHANGED TO OTHER URL
   //Local auth route.  This route uses JWT Strat to log user in locally
   callbackURL: "https://blog-front-end-test.herokuapp.com/google-login"

@@ -72,7 +72,7 @@ app.get('/fb-login',
       res.json({success: false})
     }
   })
-app.get('/auth/google', passport.authenticate('google'))
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 app.get('google-login', passport.authenticate('google', { session: false, failureRedirect: '/login' }),
   function(req, res) {
     if (req.user.jwtoken) {

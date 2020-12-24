@@ -84,7 +84,7 @@ passport.use(new GoogleStrategy({
   clientSecret: process.env.GOOGLE_APP_SECRET,
   //WHEN DONE TESTING THIS NEEDS TO BE CHANGED TO OTHER URL
   //Local auth route.  This route uses JWT Strat to log user in locally
-  callbackURL: "https://blog-front-end-test.herokuapp.com/google-login"
+  callbackURL: "https://aaron-key-blog-api.herokuapp.com/google-login"
 },
   function (accessToken, refreshToken, profile, cb) {
     //Find user if they exist

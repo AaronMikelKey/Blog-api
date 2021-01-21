@@ -58,7 +58,7 @@ app.use('/', index);
 app.use('/auth', auth);
 //Facebook Auth process, user logs in with FB and is sent auth token from API
 app.get('/auth/facebook', passport.authenticate('facebook'))
-app.get('/return', 
+app.get('/fb-login', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');

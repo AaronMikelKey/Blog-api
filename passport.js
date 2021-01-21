@@ -38,7 +38,7 @@ passport.use(new FacebookStrategy({
   clientID: process.env.FB_APP_ID||process.env.FB_APP_ID2,
   clientSecret: process.env.FB_SECRET||process.env.FB_SECRET2,
   //WHEN DONE TESTING THIS NEEDS TO BE CHANGED TO OTHER URL
-  callbackURL: "https://blog-front-end-test.herokuapp.com",
+  callbackURL: "https://blog-front-end-test.herokuapp.com/fb-login",
   enableProof: true,
   profileFields: ['id', 'displayName', 'photos', 'email']
 },

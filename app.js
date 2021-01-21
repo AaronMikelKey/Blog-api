@@ -75,18 +75,11 @@ app.get('/fb-login',
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }))
 app.get('google-login', passport.authenticate('google', { session: false, failureRedirect: '/login' }),
   function(req, res) {
-    if (req.user.jwtoken) {
-      const token = req.user.jwtoken
-      //set cookie with 1 hour lifespan.  httpOnly means only accessible byt the webserver,
-      //    secure means it requires https
-      res.cookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
-      //client side should handle redirect just in case they log in from a post
-      res.json({success: true})
-    } else {
-      //client side will redirect to login just in case
-      res.json({success: false})
+    //Need to get the access code from x-www-form-urlencoded here, send it to https://oauth2.googleapis.com/token
+    //response from that will give us the google api access token, so then we send that to https://www.googleapis.com 
+    //
     }
-  })
+  )
 app.use('/logout', function(req, res) {
   res.clearCookie('jwtoken', token, {maxAge: 3600, httpOnly: true, secure: true, sameSite: strict})
   res.json({success: true})

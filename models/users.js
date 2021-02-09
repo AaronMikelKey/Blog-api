@@ -56,4 +56,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, next) {
 //static method to find user by FB, Google, or Twitter ID if they are already a member, if not, create new member
 UserSchema.plugin(findOrCreate)
 
-module.exports = mongoose.model('User', UserSchema)
+const User = mongoose.model('User', UserSchema)
+
+module.exports = User
